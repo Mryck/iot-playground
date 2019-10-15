@@ -2,14 +2,7 @@
   <div>
     <div class="columns is-multiline">
       <div class="column is-one-quarter" v-for="sensor in sensors" :key="sensor.topic">
-        <div class="box">
-          <article class="media">
-            <div class="media-content">
-              <p class="title is-5">{{ sensor.topic }}</p>
-              <p class="is-size-1 has-text-centered">{{ sensor.payload }}</p>
-            </div>
-          </article>
-        </div>
+        <DashboardCard :topic="sensor.topic" :payload="sensor.payload"></DashboardCard>
       </div>
     </div>
   </div>
@@ -17,8 +10,12 @@
 
 <script>
 //import io from "socket.io-client";
+import DashboardCard from "./DashboardCard.vue";
 
 export default {
+  components: {
+    DashboardCard
+  },
   data() {
     return {
       sensors: [
