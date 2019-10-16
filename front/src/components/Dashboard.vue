@@ -13,7 +13,7 @@
               <div class="navbar-end">
                 <span class="navbar-item">
                   <a class="icon is-large has-text-dark">
-                    <i class="mdi mdi-36px mdi-plus-box"></i>
+                    <i class="mdi mdi-36px mdi-plus-box" @click="addCard"></i>
                   </a>
                 </span>
               </div>
@@ -25,9 +25,7 @@
     <br />
     <div class="container">
       <div class="columns is-multiline">
-        <div class="column is-one-quarter" v-for="sensor in sensors" :key="sensor.id">
-          <DashboardCard :topic="sensor.topic" :payload="sensor.payload"></DashboardCard>
-        </div>
+          <DashboardCard  class="column is-one-quarter" v-for="sensor in sensors" :key="sensor.id" :sensor="sensor"></DashboardCard>
       </div>
     </div>
   </div>
