@@ -1,8 +1,33 @@
 <template>
   <div>
-    <div class="columns is-multiline">
-      <div class="column is-one-quarter" v-for="sensor in sensors" :key="sensor.topic">
-        <DashboardCard :topic="sensor.topic" :payload="sensor.payload"></DashboardCard>
+    <section class="hero is-light">
+      <div class="hero-head">
+        <nav class="navbar">
+          <div class="container">
+            <div id="navbarMenuHeroA" class="navbar-menu">
+              <div class="navbar-start">
+                <span class="navbar-item">
+                  <h1 class="title">MQTT Dashboard</h1>
+                </span>
+              </div>
+              <div class="navbar-end">
+                <span class="navbar-item">
+                  <a class="icon is-large has-text-dark">
+                    <i class="mdi mdi-36px mdi-plus-box"></i>
+                  </a>
+                </span>
+              </div>
+            </div>
+          </div>
+        </nav>
+      </div>
+    </section>
+    <br />
+    <div class="container">
+      <div class="columns is-multiline">
+        <div class="column is-one-quarter" v-for="sensor in sensors" :key="sensor.id">
+          <DashboardCard :topic="sensor.topic" :payload="sensor.payload"></DashboardCard>
+        </div>
       </div>
     </div>
   </div>
@@ -19,12 +44,21 @@ export default {
   data() {
     return {
       sensors: [
-        { topic: "home", payload: "23" },
-        { topic: "bedroom", payload: "20" },
-        { topic: "outside", payload: "19" }
+        { id: 0, topic: "home", payload: "23" },
+        { id: 1, topic: "bedroom", payload: "20" },
+        { id: 2, topic: "outside", payload: "19" }
       ]
       //socket: io("http://localhost:5000/")
     };
+  },
+  methods: {
+    addCard() {
+      this.sensors.push({
+        id: this.sensors.length,
+        topic: "new",
+        payload: "NaN"
+      });
+    }
   },
   mounted() {
     // this.socket.on("mqtt_message", data => {

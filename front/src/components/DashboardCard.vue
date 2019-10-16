@@ -27,6 +27,7 @@ export default {
   },
   data() {
     return {
+      isModalVisible: false
       // sensors: [
       //   { topic: "home", payload: "23" },
       //   { topic: "bedroom", payload: "20" },
@@ -34,6 +35,12 @@ export default {
       // ]
       // //socket: io("http://localhost:5000/")
     };
+  },
+  methods: {
+    showModal() {},
+    closeModal() {
+      this.isModalVisible = false;
+    }
   },
   mounted() {
     // this.socket.on("mqtt_message", data => {
