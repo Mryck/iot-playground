@@ -25,7 +25,9 @@
     <br />
     <div class="container">
       <div class="columns is-multiline">
-          <DashboardCard  class="column is-one-quarter" v-for="sensor in sensors" :key="sensor.id" :sensor="sensor"></DashboardCard>
+        <div class="column is-one-quarter" v-for="sensor in sensors" :key="sensor.id">
+          <DashboardCard :sensor="sensor"></DashboardCard>
+        </div>
       </div>
     </div>
   </div>

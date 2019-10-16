@@ -1,17 +1,30 @@
 <template>
   <div>
     <div class="box">
-      <article class="media">
-        <div class="media-content">
-          <p class="title is-5">{{ topic }}</p>
-          <p class="is-size-1 has-text-centered">{{ payload }}</p>
-        </div>
-        <a class="has-text-right">
-          <span class="icon has-text-info is-medium has-text-right">
-            <i class="mdi mdi-24px mdi-settings"></i>
-          </span>
-        </a>
-      </article>
+      <transition name="fade" mode="out-in">
+        <article key="1" v-if="!isSettingsVisible" class="media">
+          <div class="media-content">
+            <p class="title is-5">{{ sensor.topic }}</p>
+            <p class="is-size-1 has-text-centered">{{ sensor.payload }}</p>
+          </div>
+          <a class="has-text-right">
+            <span class="icon has-text-info is-medium has-text-right">
+              <i class="mdi mdi-24px mdi-settings" @click="showSettings"></i>
+            </span>
+          </a>
+        </article>
+        <article key="2" v-else class="media">
+          <div class="media-content">
+            <p class="title is-5">Settings</p>
+            <input v-model="sensor.topic" />
+          </div>
+          <a class="has-text-right">
+            <span class="icon has-text-info is-medium has-text-right">
+              <i class="mdi mdi-24px mdi-close" @click="closeSettings"></i>
+            </span>
+          </a>
+        </article>
+      </transition>
     </div>
   </div>
 </template>
@@ -22,12 +35,11 @@ import "@mdi/font/css/materialdesignicons.css";
 
 export default {
   props: {
-    topic: String,
-    payload: String
+    sensor: Object
   },
   data() {
     return {
-      isModalVisible: false
+      isSettingsVisible: false
       // sensors: [
       //   { topic: "home", payload: "23" },
       //   { topic: "bedroom", payload: "20" },
@@ -37,9 +49,11 @@ export default {
     };
   },
   methods: {
-    showModal() {},
-    closeModal() {
-      this.isModalVisible = false;
+    showSettings() {
+      this.isSettingsVisible = true;
+    },
+    closeSettings() {
+      this.isSettingsVisible = false;
     }
   },
   mounted() {
@@ -49,3 +63,13 @@ export default {
   }
 };
 </script>
+
+<style>
+.fade-enter-active,
+.fade-leave-active {
+  transition: opacity 0.2s;
+}
+.fade-enter, .fade-leave-to /* .fade-leave-active below version 2.1.8 */ {
+  opacity: 0;
+}
+</style>
