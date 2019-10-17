@@ -53,15 +53,22 @@ export default {
   },
   methods: {
     addCard() {
+      let newIndex;
+      if (this.devices.length === 0) {
+        newIndex = 0;
+      } else {
+        newIndex = this.devices[this.devices.length - 1].id + 1;
+      }
+
       this.devices.push({
-        id: this.devices[this.devices.length - 1].id + 1,
+        id: newIndex,
         topic: "new",
         payload: "NaN",
         type: "Sensor"
       });
     },
     deleteCard(id) {
-      let index = this.devices.findIndex(x => x.id === id)
+      let index = this.devices.findIndex(x => x.id === id);
       this.devices.splice(index, 1);
     }
   },
