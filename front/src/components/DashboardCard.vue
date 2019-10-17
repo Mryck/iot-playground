@@ -4,8 +4,14 @@
       <transition name="fade" mode="out-in">
         <article key="1" v-if="!isSettingsVisible" class="media">
           <div class="media-content">
-            <p class="title is-5">{{ sensor.topic }}</p>
-            <p class="is-size-1 has-text-centered">{{ sensor.payload }}</p>
+            <p class="title is-5">
+              <span class="icon has-text-dark">
+                <i v-if="device.type == 'Sensor'" class="mdi mdi-24px mdi-thermometer"></i>
+                <i v-else class="mdi mdi-24px mdi-toggle-switch"></i>
+              </span>
+              {{ deviceName }}
+            </p>
+            <p class="is-size-1 has-text-centered">{{ device.payload }}</p>
           </div>
           <a class="has-text-right">
             <span class="icon has-text-info is-medium has-text-right">
@@ -16,7 +22,22 @@
         <article key="2" v-else class="media">
           <div class="media-content">
             <p class="title is-5">Settings</p>
-            <input v-model="sensor.topic" />
+            <p>
+              mqtt topic:
+              <input v-model="device.topic" />
+            </p>
+            <br />
+            <p>Device type:</p>
+            <div class="control">
+              <label class="radio">
+                <input type="radio" v-model="device.type" value="Sensor" />
+                Sensor
+              </label>
+              <label class="radio">
+                <input type="radio" v-model="device.type" value="Switch" />
+                Switch
+              </label>
+            </div>
           </div>
           <a class="has-text-right">
             <span class="icon has-text-info is-medium has-text-right">
@@ -35,11 +56,12 @@ import "@mdi/font/css/materialdesignicons.css";
 
 export default {
   props: {
-    sensor: Object
+    device: Object
   },
   data() {
     return {
-      isSettingsVisible: false
+      isSettingsVisible: false,
+      deviceType: "Sensor"
       // sensors: [
       //   { topic: "home", payload: "23" },
       //   { topic: "bedroom", payload: "20" },
@@ -47,6 +69,13 @@ export default {
       // ]
       // //socket: io("http://localhost:5000/")
     };
+  },
+  computed: {
+    deviceName: function() {
+      return this.device.topic.split("/")[
+        this.device.topic.split("/").length - 1
+      ];
+    }
   },
   methods: {
     showSettings() {

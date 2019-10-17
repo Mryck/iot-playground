@@ -25,8 +25,8 @@
     <br />
     <div class="container">
       <div class="columns is-multiline">
-        <div class="column is-one-quarter" v-for="sensor in sensors" :key="sensor.id">
-          <DashboardCard :sensor="sensor"></DashboardCard>
+        <div class="column is-one-quarter" v-for="device in devices" :key="device.id">
+          <DashboardCard :device="device"></DashboardCard>
         </div>
       </div>
     </div>
@@ -43,20 +43,21 @@ export default {
   },
   data() {
     return {
-      sensors: [
-        { id: 0, topic: "home", payload: "23" },
-        { id: 1, topic: "bedroom", payload: "20" },
-        { id: 2, topic: "outside", payload: "19" }
+      devices: [
+        { id: 0, topic: "home/kitchen", payload: "23", type: "Sensor" },
+        { id: 1, topic: "home/bedroom", payload: "20", type: "Sensor" },
+        { id: 2, topic: "home/outside", payload: "19", type: "Sensor" }
       ]
       //socket: io("http://localhost:5000/")
     };
   },
   methods: {
     addCard() {
-      this.sensors.push({
-        id: this.sensors.length,
+      this.devices.push({
+        id: this.devices.length,
         topic: "new",
-        payload: "NaN"
+        payload: "NaN",
+        type: "Sensor"
       });
     }
   },
