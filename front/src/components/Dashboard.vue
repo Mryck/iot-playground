@@ -26,7 +26,7 @@
     <div class="container">
       <div class="columns is-multiline">
         <div class="column is-one-quarter" v-for="device in devices" :key="device.id">
-          <DashboardCard :device="device"></DashboardCard>
+          <DashboardCard :device="device" @delete-card="deleteCard"></DashboardCard>
         </div>
       </div>
     </div>
@@ -54,11 +54,15 @@ export default {
   methods: {
     addCard() {
       this.devices.push({
-        id: this.devices.length,
+        id: this.devices[this.devices.length - 1].id + 1,
         topic: "new",
         payload: "NaN",
         type: "Sensor"
       });
+    },
+    deleteCard(id) {
+      let index = this.devices.findIndex(x => x.id === id)
+      this.devices.splice(index, 1);
     }
   },
   mounted() {

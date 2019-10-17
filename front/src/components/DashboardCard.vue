@@ -38,6 +38,13 @@
                 Switch
               </label>
             </div>
+            <p class="has-text-right">
+              <a>
+                <span class="icon has-text-danger is-medium has-text-right">
+                  <i class="mdi mdi-24px mdi-delete" @click="deleteCard"></i>
+                </span>
+              </a>
+            </p>
           </div>
           <a class="has-text-right">
             <span class="icon has-text-info is-medium has-text-right">
@@ -78,6 +85,9 @@ export default {
     }
   },
   methods: {
+    deleteCard() {
+      this.$emit("delete-card", this.device.id);
+    },
     showSettings() {
       this.isSettingsVisible = true;
     },
