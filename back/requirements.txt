@@ -1,0 +1,12 @@
+Click
+Flask
+Flask-Cors
+itsdangerous
+Jinja2
+MarkupSafe
+six
+tinydb
+Werkzeug
+flask_mqtt
+flask_socketio
+eventlet

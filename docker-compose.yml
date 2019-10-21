@@ -10,3 +10,10 @@ services:
     ports:
       - "1883:1883"
     restart: on-failure
+  web:
+    image: iot-back:latest
+    hostname: iot-back
+    depends_on: 
+      - mosquitto
+    ports:
+      - "5000:5000" 
