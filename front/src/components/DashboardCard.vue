@@ -58,7 +58,7 @@
 </template>
 
 <script>
-//import io from "socket.io-client";
+
 import "@mdi/font/css/materialdesignicons.css";
 
 export default {
@@ -69,12 +69,6 @@ export default {
     return {
       isSettingsVisible: false,
       deviceType: "Sensor"
-      // sensors: [
-      //   { topic: "home", payload: "23" },
-      //   { topic: "bedroom", payload: "20" },
-      //   { topic: "outside", payload: "19" }
-      // ]
-      // //socket: io("http://localhost:5000/")
     };
   },
   computed: {
@@ -97,7 +91,8 @@ export default {
   },
   mounted() {
     // this.socket.on("mqtt_message", data => {
-    //   this.sensors.push(data);
+    //   // eslint-disable-next-line
+    //   console.log(data);
     // });
   }
 };

@@ -48,7 +48,7 @@ export default {
         { id: 1, topic: "home/bedroom", payload: "20", type: "Sensor" },
         { id: 2, topic: "home/outside", payload: "19", type: "Sensor" }
       ]
-      //socket: io("http://localhost:5000/")
+      //socket: io("http://localhost:5000")
     };
   },
   methods: {
@@ -72,10 +72,20 @@ export default {
       this.devices.splice(index, 1);
     }
   },
+  sockets: {
+    mqtt_message(data) {
+      let index = this.devices.findIndex(x => x.topic === data.topic);
+      this.devices[index].payload = data.payload
+    }
+  },
   mounted() {
-    // this.socket.on("mqtt_message", data => {
-    //   this.sensors.push(data);
-    // });
+    var topic = "home/kitchen";
+    var qos = 0;
+    var data = '{"topic": "' + topic + '", "qos": ' + qos + "}";
+    this.$socket.emit("subscribe", data);
+  },
+  beforeDestroy() {
+    this.$socket.emit("unsubscribe_all");
   }
 };
 </script>
