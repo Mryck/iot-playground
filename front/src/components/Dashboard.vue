@@ -34,7 +34,6 @@
 </template>
 
 <script>
-
 import DashboardCard from "./DashboardCard.vue";
 
 export default {
@@ -70,19 +69,19 @@ export default {
       this.devices.splice(index, 1);
     }
   },
-  // Specific integration to handle incomming socketio message from the backend 
+  // Specific integration to handle incomming socketio message from the backend
   sockets: {
     mqtt_message(data) {
       let index = this.devices.findIndex(x => x.topic === data.topic);
-      this.devices[index].payload = data.payload
+      this.devices[index].payload = data.payload;
     }
   },
   mounted() {
     // On mounted, subscribe to all known devices, later fetch from tinyDB
     var topic = "home/kitchen";
     var qos = 0;
-    var data = '{"topic": "' + topic + '", "qos": ' + qos + "}";
-    this.$socket.emit("subscribe", data);
+    var data = { topic: topic, qos: qos };
+    this.$socket.emit("subscribe", JSON.stringify(data));
   },
   beforeDestroy() {
     // for now unsubscribe to all topic on Destroy
