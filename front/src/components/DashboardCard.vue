@@ -2,6 +2,7 @@
   <div>
     <div class="box">
       <transition name="fade" mode="out-in">
+        <!-- main display of the card with value -->
         <article key="1" v-if="!isSettingsVisible" class="media">
           <div class="media-content">
             <p class="title is-5">
@@ -19,6 +20,7 @@
             </span>
           </a>
         </article>
+        <!-- settings diplay of the card -->
         <article key="2" v-else class="media">
           <div class="media-content">
             <p class="title is-5">Settings</p>
@@ -73,6 +75,7 @@ export default {
   },
   computed: {
     deviceName: function() {
+      // Return the name of the device from the topic (home/sensor/kitchen = kitchen)
       return this.device.topic.split("/")[
         this.device.topic.split("/").length - 1
       ];
@@ -88,12 +91,6 @@ export default {
     closeSettings() {
       this.isSettingsVisible = false;
     }
-  },
-  mounted() {
-    // this.socket.on("mqtt_message", data => {
-    //   // eslint-disable-next-line
-    //   console.log(data);
-    // });
   }
 };
 </script>

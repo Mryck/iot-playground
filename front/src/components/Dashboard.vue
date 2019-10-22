@@ -34,7 +34,7 @@
 </template>
 
 <script>
-//import io from "socket.io-client";
+
 import DashboardCard from "./DashboardCard.vue";
 
 export default {
@@ -48,7 +48,6 @@ export default {
         { id: 1, topic: "home/bedroom", payload: "20", type: "Sensor" },
         { id: 2, topic: "home/outside", payload: "19", type: "Sensor" }
       ]
-      //socket: io("http://localhost:5000")
     };
   },
   methods: {
@@ -59,7 +58,6 @@ export default {
       } else {
         newIndex = this.devices[this.devices.length - 1].id + 1;
       }
-
       this.devices.push({
         id: newIndex,
         topic: "new",
@@ -72,6 +70,7 @@ export default {
       this.devices.splice(index, 1);
     }
   },
+  // Specific integration to handle incomming socketio message from the backend 
   sockets: {
     mqtt_message(data) {
       let index = this.devices.findIndex(x => x.topic === data.topic);
@@ -79,12 +78,14 @@ export default {
     }
   },
   mounted() {
+    // On mounted, subscribe to all known devices, later fetch from tinyDB
     var topic = "home/kitchen";
     var qos = 0;
     var data = '{"topic": "' + topic + '", "qos": ' + qos + "}";
     this.$socket.emit("subscribe", data);
   },
   beforeDestroy() {
+    // for now unsubscribe to all topic on Destroy
     this.$socket.emit("unsubscribe_all");
   }
 };
