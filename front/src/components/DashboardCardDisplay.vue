@@ -11,10 +11,10 @@
         </p>
         <p v-if="device.type == 'Sensor'" class="is-size-1 has-text-centered">{{ device.payload }}</p>
         <p v-else class="is-size-1 has-text-centered">
-          <a v-show="this.switchState" class="icon is-large has-text-warning">
+          <a v-show="updateState" class="icon is-large has-text-warning">
             <i class="mdi mdi-48px mdi-toggle-switch" @click="toggle"></i>
           </a>
-          <a v-show="!this.switchState" class="icon is-large has-text-dark">
+          <a v-show="!updateState" class="icon is-large has-text-dark">
             <i class="mdi mdi-48px mdi-toggle-switch-off" @click="toggle"></i>
           </a>
         </p>
@@ -46,6 +46,9 @@ export default {
       return this.device.topic.split("/")[
         this.device.topic.split("/").length - 1
       ];
+    },
+    updateState: function() {
+      return this.device.payload == "ON" ? true : false;
     }
   },
   methods: {
@@ -54,6 +57,13 @@ export default {
     },
     toggle() {
       this.switchState = !this.switchState;
+      var state = this.switchState ? "ON" : "OFF";
+      var data = {
+        topic: this.device.topic,
+        qos: 0,
+        payload: state
+      };
+      this.$socket.emit("publish", JSON.stringify(data));
     }
   }
 };

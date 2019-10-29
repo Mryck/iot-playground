@@ -25,6 +25,13 @@ mqtt = Mqtt(app)
 socketio = SocketIO(app, cors_allowed_origins='*', engineio_logger=True)
 
 
+@socketio.on('publish')
+def handle_publish(json_str):
+    """Mqtt publish payload to the given topic."""
+    mqtt_data = json.loads(json_str)
+    mqtt.publish(mqtt_data['topic'], mqtt_data['payload'], mqtt_data['qos'])
+
+
 @socketio.on('subscribe')
 def handle_subscribe(json_str):
     """Mqtt subscribe to the given topic send from socketio."""
@@ -47,12 +54,6 @@ def handle_mqtt_message(client, userdata, message):
         'qos': message.qos,
     }
     socketio.emit('mqtt_message', data=json_data)
-
-
-@mqtt.on_log()
-def handle_logging(client, userdata, level, buf):
-    """Log mqtt message."""
-    print(level, buf)
 
 
 if __name__ == '__main__':
