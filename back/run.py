@@ -1,3 +1,4 @@
+"""Backend code to intercat with mqtt and serve info to the front end"""
 import eventlet
 import json
 from flask_mqtt import Mqtt
@@ -14,7 +15,6 @@ app.config['MQTT_BROKER_PORT'] = 1883
 app.config['MQTT_CLIENT_ID'] = 'flask_mqtt'
 app.config['MQTT_KEEPALIVE'] = 5
 app.config['MQTT_TLS_ENABLED'] = False
-app.config['SECRET_KEY'] = 'secret!'
 
 mqtt = Mqtt(app)
 
@@ -24,24 +24,29 @@ socketio = SocketIO(app, cors_allowed_origins='*', engineio_logger=True)
 
 @socketio.on('subscribe')
 def handle_subscribe(json_str):
-    data = json.loads(json_str)
-    mqtt.subscribe(data['topic'], data['qos'])
+    """Handle subscribe message form socketio
+    and mqtt subscribe to the given topic"""
+    mqtt_data = json.loads(json_str)
+    mqtt.subscribe(mqtt_data['topic'], mqtt_data['qos'])
 
 
 @socketio.on('unsubscribe_all')
 def handle_unsubscribe_all():
+    """mqtt unsubscribe to all topic"""
     mqtt.unsubscribe_all()
 
 
 @mqtt.on_message()
 def handle_mqtt_message(client, userdata, message):
-    data = dict(topic=message.topic,
-                payload=message.payload.decode(), qos=message.qos)
+    """Send socketio request on mqtt message"""
+    data = {'topic': message.topic,
+            'payload': message.payload.decode(), 'qos': message.qos}
     socketio.emit('mqtt_message', data=data)
 
 
 @mqtt.on_log()
 def handle_logging(client, userdata, level, buf):
+    """Log mqtt message"""
     print(level, buf)
 
 
